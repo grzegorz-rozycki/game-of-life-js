@@ -50,7 +50,7 @@ Graphics.prototype.drawWorld = function (cells) {
 
         for (i = 0; i < cells.length; i += 1) {
 
-            if (cells[i] instanceof Graphics.Point) {
+            if (!(cells[i] instanceof Graphics.Point)) {
                 break;
             }
 
