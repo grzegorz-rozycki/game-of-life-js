@@ -5,7 +5,7 @@ function Graphics() {
     this.tileSize = 10;
     this.mapWidth = 100;
     this.mapHeight = 100;
-    this.backgroundColor = '#BDBDBD';
+    this.backgroundColor = '#EEE';
     this.tileColor = '#000';
 }
 

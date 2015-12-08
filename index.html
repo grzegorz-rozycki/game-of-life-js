@@ -12,11 +12,12 @@
         </canvas>
         <script src="gameoflife.js"></script>
         <script src="graphics.js"></script>
-        <script>
+        <script src="life.js"></script>
+        <script type='text/javascript'>
             'use strict';
-            var life = new GameOfLife(3, 3),
-                grap = new Graphics();
-            console.log(life.countNeighbours(0, 0));
+            document.addEventListener('DOMContentLoaded', function () {
+               LIFE.init();
+            });
         </script>
     </body>
 </html>
