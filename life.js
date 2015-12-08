@@ -29,7 +29,7 @@ var LIFE = (function () {
             for (n = 0; n < gol.columns; n += 1) {
 
                 if (gol.isCellAlive(m, n)) {
-                    pointsList[i] = new Graphics.Point(m, n);
+                    pointsList[i] = new Graphics.Point(n, m);
                     i += 1;
                 }
             }
