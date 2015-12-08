@@ -3,12 +3,15 @@
 var LIFE = (function () {
     var api    = Object.create(null),
         conf   = Object.create(null),
+        loop   = Object.create(null),
         gol    = null,
         graph  = null,
         inited = false;
 
+    conf.fps             = 10;
+    conf.frameTime       = conf.fps / 1000;
     conf.rows            = 10;
-    conf.columns         = 10;
+    conf.columns         = 100;
     conf.tileSize        = 10;
     conf.canvasElementId = '#canvas';
 
@@ -38,10 +41,36 @@ var LIFE = (function () {
         return pointsList;
     }
 
-    // public methods
-    api.step = function () {
-        gol.step();
+    function step() {
+        var now = Date.now();
+
+        if (now - loop.lastAction >= loop.timeout) {
+            loop.lastAction = now;
+            gol.step();
+        }
+
         graph.drawWorld(cells2points());
+        loop.frameRequest = window.requestAnimationFrame(step);
+    }
+
+
+    // public methods
+
+    api.start = function () {
+        if (typeof loop === 'object' && !loop.frameRequest) {
+            loop.frameRequest = window.requestAnimationFrame(step);
+        }
+    };
+
+    api.stop = function () {
+        if (loop.frameRequest) {
+            window.cancelAnimationFrame(loop.frameRequest);
+            loop.frameRequest = null;
+        }
+    };
+
+    api.isRunning = function () {
+        return (loop.frameRequest !== null);
     };
 
     api.init = function () {
@@ -58,8 +87,13 @@ var LIFE = (function () {
         graph.mapHeight = conf.rows;
 
         graph.init(conf.canvasElementId);
-console.log(Math.floor(conf.rows * conf.columns / 3));
         gol.setAliveAtRandomCells(Math.floor(conf.rows * conf.columns / 3));
+
+        loop.lastAction = 0;
+        loop.timeout = conf.frameTime;
+        loop.frameRequest = null;
+
+        api.start();
     };
 
     return Object.freeze(api);
