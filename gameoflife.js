@@ -149,8 +149,7 @@ GameOfLife.prototype.setAliveAtRandomCells = function (aliveCellCount) {
 };
 
 GameOfLife.prototype.step = function () {
-    var cellCopy   = this.cells.slice(),
-        neighbours = 0,
+    var neighbours = 0,
         alive      = false,
         m          = 0,
         n          = 0;
@@ -163,16 +162,14 @@ GameOfLife.prototype.step = function () {
 
             if (!alive && neighbours === 3) {
                 // if cell is dead and has exactyl 3 neighbours make cell alive
-                cellCopy[m][n] = 1;
+                this.setCellAlive(m, n);
             } else if (alive && neighbours !== 2 && neighbours !== 3) {
                 // if cell is alive and has number of neighbours other than 2 or 3 dies
-                cellCopy[m][n] = 0;
+                this.setCellDead(m, n);
             }
 
         }
     }
-
-    this.cells = cellCopy;
 };
 
 GameOfLife.prototype.toString = function () {
