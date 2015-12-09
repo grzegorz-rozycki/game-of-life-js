@@ -20,6 +20,14 @@
             #canvas {
                 box-shadow: 0px 1px 3px #333;
             }
+
+            .left {
+                float: left;
+            }
+
+            .right {
+                float: right;
+            }
         </style>
     </head>
 
@@ -28,10 +36,16 @@
         <div id="content">
             <h1>Life</h1>
 
-            <div id="controls">
+            <div class="controls left">
                 <button type="button" onclick="LIFE.start()">Start</button>
                 <button type="button" onclick="LIFE.stop()">Stop</button>
                 <button type="button" onclick="LIFE.restart()">Restart</button>
+            </div>
+
+            <div class="controls right">
+                <button type="button" onclick="LIFE.clear()">Clear</button>
+                <button type="button" onclick="LIFE.seed()">Seed</button>
+                <button type="button" onclick="LIFE.invertSeed()">Invert</button>
             </div>
 
             <canvas id="canvas" width="960" height="500" tabindex="0">

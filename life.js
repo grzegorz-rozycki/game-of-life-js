@@ -54,12 +54,50 @@ var LIFE = (function () {
         loop.frameRequest = window.requestAnimationFrame(step);
     }
 
+    function canvasClickHandler(evt) {
+        var m = Math.floor(evt.offsetY / conf.tileSize),
+            n = Math.floor(evt.offsetX / conf.tileSize);
+
+        if (gol.isCellAlive(m, n)) {
+            gol.setCellDead(m, n);
+        } else {
+            gol.setCellAlive(m, n);
+        }
+
+        graph.drawWorld(cells2points());
+    }
+
 
     // public methods
 
     api.seed = function () {
         gol.clearCells();
         gol.setAliveAtRandomCells(Math.floor(conf.rows * conf.columns * conf.seedDensity));
+        graph.drawWorld(cells2points());
+    };
+
+    api.invertSeed = function () {
+        var m = 0,
+            n = 0;
+
+        for (m = 0; m < gol.rows; m += 1) {
+
+            for (n = 0; n < gol.columns; n += 1) {
+
+                if (gol.isCellAlive(m, n)) {
+                    gol.setCellDead(m, n);
+                } else {
+                    gol.setCellAlive(m, n);
+                }
+            }
+        }
+
+        graph.drawWorld(cells2points());
+    };
+
+    api.clear = function () {
+        gol.clearCells();
+        graph.drawWorld(cells2points());
     };
 
     api.start = function () {
@@ -87,13 +125,15 @@ var LIFE = (function () {
         }
 
         api.stop();
-        api.seed();
+        gol.clearCells();
+        gol.setAliveAtRandomCells(Math.floor(conf.rows * conf.columns * conf.seedDensity));
         api.start();
     };
 
     api.init = function () {
+        var canvasElement = document.querySelector(conf.canvasElementId);
 
-        if (inited) {
+        if (inited || !canvasElement) {
             return;
         }
 
@@ -109,6 +149,8 @@ var LIFE = (function () {
         loop.lastAction = 0;
         loop.timeout = conf.frameTime;
         loop.frameRequest = null;
+
+        canvasElement.addEventListener('click', canvasClickHandler, false);
 
         inited = true;
     };
