@@ -57,8 +57,13 @@ var LIFE = (function () {
 
     // public methods
 
+    api.seed = function () {
+        gol.clearCells();
+        gol.setAliveAtRandomCells(Math.floor(conf.rows * conf.columns * conf.seedDensity));
+    };
+
     api.start = function () {
-        if (typeof loop === 'object' && !loop.frameRequest) {
+        if (inited && (typeof loop === 'object') && !loop.frameRequest) {
             loop.frameRequest = window.requestAnimationFrame(step);
             loop.lastAction   = Date.now();
         }
@@ -75,6 +80,17 @@ var LIFE = (function () {
         return (loop.frameRequest !== null);
     };
 
+    api.restart = function () {
+
+        if (!inited) {
+            return;
+        }
+
+        api.stop();
+        api.seed();
+        api.start();
+    };
+
     api.init = function () {
 
         if (inited) {
@@ -89,7 +105,6 @@ var LIFE = (function () {
         graph.mapHeight = conf.rows;
 
         graph.init(conf.canvasElementId);
-        gol.setAliveAtRandomCells(Math.floor(conf.rows * conf.columns * conf.seedDensity));
 
         loop.lastAction = 0;
         loop.timeout = conf.frameTime;

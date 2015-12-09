@@ -3,13 +3,41 @@
     <head>
         <meta charset="utf-8"/>
         <title>The Game Of Life</title>
+        <style type="text/css">
+            body {
+                background: #fff;
+                color: #333;
+
+                font-family: Helvetica, Arial, Sans-seif;
+                font-size: 1.0em;
+            }
+
+            #content {
+                width: 960px;
+                margin: 0 auto;
+            }
+
+            #canvas {
+                box-shadow: 0px 1px 3px #333;
+            }
+        </style>
     </head>
 
     <body>
-        <h1>Life</h1>
-        <canvas id="canvas" width="800" height="400" tabindex="0">
-            Your browser doesn't support the canvas element...
-        </canvas>
+
+        <div id="content">
+            <h1>Life</h1>
+
+            <div id="controls">
+                <button type="button" onclick="LIFE.start()">Start</button>
+                <button type="button" onclick="LIFE.stop()">Stop</button>
+                <button type="button" onclick="LIFE.restart()">Restart</button>
+            </div>
+
+            <canvas id="canvas" width="960" height="500" tabindex="0">
+                Your browser doesn't support the canvas element...
+            </canvas>
+        </div>
         <script src="gameoflife.js"></script>
         <script src="graphics.js"></script>
         <script src="life.js"></script>
@@ -17,6 +45,8 @@
             'use strict';
             document.addEventListener('DOMContentLoaded', function () {
                LIFE.init();
+               LIFE.seed();
+               LIFE.start();
             });
         </script>
     </body>
