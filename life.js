@@ -8,11 +8,12 @@ var LIFE = (function () {
         graph  = null,
         inited = false;
 
-    conf.fps             = 10;
-    conf.frameTime       = conf.fps / 1000;
-    conf.rows            = 10;
-    conf.columns         = 100;
-    conf.tileSize        = 10;
+    conf.fps             = 30;
+    conf.frameTime       = 1000 / conf.fps;
+    conf.rows            = 100;
+    conf.columns         = 192;
+    conf.seedDensity     = .05; // how many of the cells are alive; percent
+    conf.tileSize        = 5;
     conf.canvasElementId = '#canvas';
 
     // private methods
@@ -47,9 +48,9 @@ var LIFE = (function () {
         if (now - loop.lastAction >= loop.timeout) {
             loop.lastAction = now;
             gol.step();
+            graph.drawWorld(cells2points());
         }
 
-        graph.drawWorld(cells2points());
         loop.frameRequest = window.requestAnimationFrame(step);
     }
 
@@ -59,6 +60,7 @@ var LIFE = (function () {
     api.start = function () {
         if (typeof loop === 'object' && !loop.frameRequest) {
             loop.frameRequest = window.requestAnimationFrame(step);
+            loop.lastAction   = Date.now();
         }
     };
 
@@ -87,13 +89,13 @@ var LIFE = (function () {
         graph.mapHeight = conf.rows;
 
         graph.init(conf.canvasElementId);
-        gol.setAliveAtRandomCells(Math.floor(conf.rows * conf.columns / 3));
+        gol.setAliveAtRandomCells(Math.floor(conf.rows * conf.columns * conf.seedDensity));
 
         loop.lastAction = 0;
         loop.timeout = conf.frameTime;
         loop.frameRequest = null;
 
-        api.start();
+        inited = true;
     };
 
     return Object.freeze(api);
