@@ -149,27 +149,31 @@ GameOfLife.prototype.setAliveAtRandomCells = function (aliveCellCount) {
 };
 
 GameOfLife.prototype.step = function () {
-    var neighbours = 0,
+    var cellCopy   = new Array(this.rows),
+        neighbours = 0,
         alive      = false,
         m          = 0,
         n          = 0;
 
     for (m = 0; m < this.rows; m += 1) {
 
+        cellCopy[m] = this.cells[m].slice();
+
         for (n = 0; n < this.columns; n += 1) {
             neighbours = this.countNeighbours(m, n);
-            alive = this.isCellAlive(m, n);
+            alive = (this.cells[m][n] === 1);
 
             if (!alive && neighbours === 3) {
                 // if cell is dead and has exactyl 3 neighbours make cell alive
-                this.setCellAlive(m, n);
+                cellCopy[m][n] = 1;
             } else if (alive && neighbours !== 2 && neighbours !== 3) {
                 // if cell is alive and has number of neighbours other than 2 or 3 dies
-                this.setCellDead(m, n);
+                cellCopy[m][n] = 0;
             }
-
         }
     }
+
+    this.cells = cellCopy;
 };
 
 GameOfLife.prototype.toString = function () {
