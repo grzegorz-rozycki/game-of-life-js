@@ -76,25 +76,6 @@ var LIFE = (function () {
         graph.drawWorld(cells2points());
     };
 
-    api.invertSeed = function () {
-        var m = 0,
-            n = 0;
-
-        for (m = 0; m < gol.rows; m += 1) {
-
-            for (n = 0; n < gol.columns; n += 1) {
-
-                if (gol.isCellAlive(m, n)) {
-                    gol.setCellDead(m, n);
-                } else {
-                    gol.setCellAlive(m, n);
-                }
-            }
-        }
-
-        graph.drawWorld(cells2points());
-    };
-
     api.clear = function () {
         gol.clearCells();
         graph.drawWorld(cells2points());
