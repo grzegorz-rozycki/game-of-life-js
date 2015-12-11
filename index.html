@@ -29,31 +29,72 @@
 
     <body>
 
-        <div id="content">
-            <h1>Life</h1>
+        <div class="container">
 
-            <div class="controls basic">
-                <button type="button" onclick="LIFE.start()">Start</button>
-                <button type="button" onclick="LIFE.stop()">Stop</button>
-                <button type="button" onclick="LIFE.restart()">Restart</button>
-            </div>
+            <!-- Static navbar -->
+            <nav class="navbar navbar-default">
+                <div class="container-fluid">
+                    <div class="navbar-header">
+                        <a class="navbar-brand" href="#">Life</a>
+                    </div>
+                </div><!--/.container-fluid -->
+            </nav>
 
-            <div class="controls advanced">
-                <!-- general seed options -->
-                <button type="button" onclick="LIFE.clear()">Clear</button>
-                <button type="button" onclick="LIFE.seed()">Seed</button>
-                <input id="alive_density" type="range">
-                <!-- manual / brush seed options -->
-                <input type="radio" name="brush_type" value="square">
-                <input type="radio" name="brush_type" value="circle">
-                <input id="brush_size" type="range">
-                <input id="" type="checkbox" >
-            </div>
+            <div id="life-board" class="row">
+                <div id="controls" class="col-xs-12">
+                    <div class="btn-group" role="group" aria-label="...">
+                        <button type="button" class="btn btn-default" onclick="LIFE.start()">
+                            <span class="glyphicon glyphicon-play" aria-hidden="true"></span>
+                        </button>
+                        <button type="button" class="btn btn-default" onclick="LIFE.stop()">
+                            <span class="glyphicon glyphicon-pause" aria-hidden="true"></span>
+                        </button>
+                        <button type="button" class="btn btn-default" onclick="LIFE.restart()">
+                            <span class="glyphicon glyphicon-refresh" aria-hidden="true"></span>
+                        </button>
 
-            <canvas id="canvas" width="960" height="500" tabindex="0">
-                Your browser doesn't support the canvas element...
-            </canvas>
-        </div>
+                        <div class="btn-group" role="group">
+                            <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                Advanced
+                                <span class="caret"></span>
+                            </button>
+                            <ul class="dropdown-menu">
+                                <li>
+                                    <button type="button" class="btn btn-default" onclick="LIFE.clear()">Clear</button>
+                                    <button type="button" class="btn btn-default" onclick="LIFE.seed()">Seed</button></li>
+                                </li>
+                                <li>
+                                    <label>Alive cells density</label>
+                                    <input id="alive_density" type="range" value="50">
+                                </li>
+                                <li role="separator" class="divider"></li>
+                                <li>
+                                    <label class="radio-inline"><input type="radio" name="brush_type" value="square">
+                                        Square
+                                    </label>
+                                </li>
+                                <li>
+                                    <label class="radio-inline"><input type="radio" name="brush_type" value="square">
+                                        Circle
+                                    </label>
+                                </li>
+                                <li>
+                                    <div class="checkbox">
+                                        <label><input type="checkbox" value="">Use density</label>
+                                    </div>
+                                <li>
+                                    <input id="brush_size" type="range">
+                                </li>
+                            </ul><!-- /.dropdown-menu -->
+                        </div><!-- /.btn-group -->
+                    </div><!-- /.btn-group -->
+                </div><!-- /#controls -->
+                <canvas width="800" height="400" tabindex="0" class="col-xs-12">
+                    Your browser doesn't support the canvas element...
+                </canvas>
+            </div><!--/.row -->
+        </div><!--/.container -->
+
         <script src="js/jquery-2.1.4.min.js"></script>
         <script src="js/bootstrap.min.js"></script>
         <script src="js/gameoflife.js"></script>
