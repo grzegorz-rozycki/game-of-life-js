@@ -12,7 +12,7 @@ var LIFE = (function ($) {
     conf.frameTime       = 1000 / conf.fps;
     conf.rows            = 100;
     conf.columns         = 192;
-    conf.seedDensity     = .05; // how many of the cells are alive; percent
+    conf.seedDensity     = .1; // how many of the cells are alive; percent
     conf.tileSize        = 5;
 
     // dom element selectors
