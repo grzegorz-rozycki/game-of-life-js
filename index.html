@@ -20,9 +20,24 @@
                 color: #333;
             }
 
-            #canvas {
-                box-shadow: 0px 1px 3px #333;
+            .life-wrapper {
+                position: relative;
+                overflow: hidden;
             }
+
+            .life-wrapper:hover > .life-ui {
+                margin-top: 5px;
+            }
+
+            .life-ui {
+                position: absolute;
+                margin: -40px 0 0 5px;
+                z-index: 990;
+
+                -webkit-transition: margin 0.5s ease-in-out;
+                transition: margin 0.5s ease-in-out;
+            }
+
 
         </style>
     </head>
@@ -40,20 +55,20 @@
                 </div><!--/.container-fluid -->
             </nav>
 
-            <div id="life-board" class="row">
-                <div id="controls" class="col-xs-12">
-                    <div class="btn-group" role="group" aria-label="...">
+            <div class="row">
+                <div class="life-wrapper">
+                    <div class="life-ui col-xs-12 btn-group" role="group" aria-label="...">
                         <button id="play-pause" type="button" class="btn btn-default">
                             <span class="glyphicon glyphicon-play" aria-hidden="true"></span>
                         </button>
                         <button id="restart" type="button" class="btn btn-default">
                             <span class="glyphicon glyphicon-refresh" aria-hidden="true"></span>
                         </button>
-                    </div><!-- /.btn-group -->
-                </div><!-- /#controls -->
-                <canvas width="800" height="400" tabindex="0" class="col-xs-12">
-                    Your browser doesn't support the canvas element...
-                </canvas>
+                    </div><!-- /.life-ui -->
+                    <canvas width="800" height="400" tabindex="0" class="col-xs-12">
+                        Your browser doesn't support the canvas element...
+                    </canvas>
+                </div><!-- /#life-wrapper -->
             </div><!--/.row -->
         </div><!--/.container -->
 
