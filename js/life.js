@@ -86,7 +86,6 @@ var LIFE = (function ($) {
     api.seed = function () {
         gol.clearCells();
         gol.setAliveAtRandomCells(Math.floor(conf.rows * conf.columns * conf.seedDensity));
-        graph.drawWorld(cells2points());
     };
 
     api.clear = function () {
@@ -131,8 +130,7 @@ var LIFE = (function ($) {
         }
 
         api.stop();
-        gol.clearCells();
-        gol.setAliveAtRandomCells(Math.floor(conf.rows * conf.columns * conf.seedDensity));
+        api.seed();
         api.start();
     };
 
