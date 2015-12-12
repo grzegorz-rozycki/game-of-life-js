@@ -54,19 +54,6 @@ var LIFE = (function () {
         loop.frameRequest = window.requestAnimationFrame(step);
     }
 
-    function canvasClickHandler(evt) {
-        var m = Math.floor(evt.offsetY / conf.tileSize),
-            n = Math.floor(evt.offsetX / conf.tileSize);
-
-        if (gol.isCellAlive(m, n)) {
-            gol.setCellDead(m, n);
-        } else {
-            gol.setCellAlive(m, n);
-        }
-
-        graph.drawWorld(cells2points());
-    }
-
 
     // public methods
 
@@ -112,9 +99,8 @@ var LIFE = (function () {
     };
 
     api.init = function () {
-        var canvasElement = document.querySelector(conf.canvasElementId);
 
-        if (inited || !canvasElement) {
+        if (inited) {
             return;
         }
 
@@ -130,8 +116,6 @@ var LIFE = (function () {
         loop.lastAction = 0;
         loop.timeout = conf.frameTime;
         loop.frameRequest = null;
-
-        canvasElement.addEventListener('click', canvasClickHandler, false);
 
         inited = true;
     };
