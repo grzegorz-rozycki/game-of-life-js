@@ -1,6 +1,6 @@
 'use strict';
 
-var LIFE = (function () {
+var LIFE = (function ($) {
     var api    = Object.create(null),
         conf   = Object.create(null),
         loop   = Object.create(null),
@@ -14,8 +14,19 @@ var LIFE = (function () {
     conf.columns         = 192;
     conf.seedDensity     = .05; // how many of the cells are alive; percent
     conf.tileSize        = 5;
-    conf.canvasElementId = 'canvas';
 
+    // dom element selectors
+    conf.selector = Object.create(null);
+
+    conf.selector.canvas        = 'canvas';
+    conf.selector.playPause     = '#play-pause';
+    conf.selector.playPauseIcon = '#play-pause > span';
+    conf.selector.restart       = '#restart';
+
+    conf.cssClass = Object.create(null);
+
+    conf.cssClass.play  = 'glyphicon-play';
+    conf.cssClass.pause = 'glyphicon-pause';
     // private methods
 
     /**
@@ -69,16 +80,28 @@ var LIFE = (function () {
     };
 
     api.start = function () {
+        var elm = null;
+
         if (inited && (typeof loop === 'object') && !loop.frameRequest) {
             loop.frameRequest = window.requestAnimationFrame(step);
             loop.lastAction   = Date.now();
+
+            elm = $(conf.selector.playPauseIcon);
+            elm.removeClass(conf.cssClass.play)
+            elm.addClass(conf.cssClass.pause);
         }
     };
 
     api.stop = function () {
+        var elm = null;
+
         if (loop.frameRequest) {
             window.cancelAnimationFrame(loop.frameRequest);
             loop.frameRequest = null;
+
+            elm = $(conf.selector.playPauseIcon);
+            elm.removeClass(conf.cssClass.pause)
+            elm.addClass(conf.cssClass.play);
         }
     };
 
@@ -98,6 +121,15 @@ var LIFE = (function () {
         api.start();
     };
 
+    api.playPause = function () {
+
+        if (api.isRunning()) {
+            api.stop();
+        } else {
+            api.start();
+        }
+    };
+
     api.init = function () {
 
         if (inited) {
@@ -111,14 +143,18 @@ var LIFE = (function () {
         graph.mapWidth = conf.columns;
         graph.mapHeight = conf.rows;
 
-        graph.init(conf.canvasElementId);
+        graph.init(conf.selector.canvas);
 
         loop.lastAction = 0;
         loop.timeout = conf.frameTime;
         loop.frameRequest = null;
 
+        // bind button actions
+        $(conf.selector.playPause).click(api.playPause);
+        $(conf.selector.restart).click(api.restart);
+
         inited = true;
     };
 
     return Object.freeze(api);
-} ());
+} (jQuery));
