@@ -52,41 +52,6 @@
                         <button type="button" class="btn btn-default" onclick="LIFE.restart()">
                             <span class="glyphicon glyphicon-refresh" aria-hidden="true"></span>
                         </button>
-
-                        <div class="btn-group" role="group">
-                            <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                Advanced
-                                <span class="caret"></span>
-                            </button>
-                            <ul class="dropdown-menu">
-                                <li>
-                                    <button type="button" class="btn btn-default" onclick="LIFE.clear()">Clear</button>
-                                    <button type="button" class="btn btn-default" onclick="LIFE.seed()">Seed</button></li>
-                                </li>
-                                <li>
-                                    <label>Alive cells density</label>
-                                    <input id="alive_density" type="range" value="50">
-                                </li>
-                                <li role="separator" class="divider"></li>
-                                <li>
-                                    <label class="radio-inline"><input type="radio" name="brush_type" value="square">
-                                        Square
-                                    </label>
-                                </li>
-                                <li>
-                                    <label class="radio-inline"><input type="radio" name="brush_type" value="square">
-                                        Circle
-                                    </label>
-                                </li>
-                                <li>
-                                    <div class="checkbox">
-                                        <label><input type="checkbox" value="">Use density</label>
-                                    </div>
-                                <li>
-                                    <input id="brush_size" type="range">
-                                </li>
-                            </ul><!-- /.dropdown-menu -->
-                        </div><!-- /.btn-group -->
                     </div><!-- /.btn-group -->
                 </div><!-- /#controls -->
                 <canvas width="800" height="400" tabindex="0" class="col-xs-12">
