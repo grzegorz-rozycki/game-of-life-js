@@ -68,6 +68,21 @@ var LIFE = (function ($) {
 
     // public methods
 
+    api.getSeedDensity = function () {
+        return conf.seedDensity;
+    };
+
+    api.setSeedDensity = function (seed) {
+
+        if (seed > 0 && seed <= 1) {
+            conf.seedDensity = Math.round(seed * 100) / 100;
+
+            return true;
+        }
+
+        return false;
+    };
+
     api.seed = function () {
         gol.clearCells();
         gol.setAliveAtRandomCells(Math.floor(conf.rows * conf.columns * conf.seedDensity));
