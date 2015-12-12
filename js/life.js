@@ -1,6 +1,6 @@
 'use strict';
 
-var LIFE = (function () {
+var LIFE = (function ($) {
     var api    = Object.create(null),
         conf   = Object.create(null),
         loop   = Object.create(null),
@@ -12,10 +12,21 @@ var LIFE = (function () {
     conf.frameTime       = 1000 / conf.fps;
     conf.rows            = 100;
     conf.columns         = 192;
-    conf.seedDensity     = .05; // how many of the cells are alive; percent
+    conf.seedDensity     = .1; // how many of the cells are alive; percent
     conf.tileSize        = 5;
-    conf.canvasElementId = 'canvas';
 
+    // dom element selectors
+    conf.selector = Object.create(null);
+
+    conf.selector.canvas        = 'canvas';
+    conf.selector.playPause     = '#play-pause';
+    conf.selector.playPauseIcon = '#play-pause > span';
+    conf.selector.restart       = '#restart';
+
+    conf.cssClass = Object.create(null);
+
+    conf.cssClass.play  = 'glyphicon-play';
+    conf.cssClass.pause = 'glyphicon-pause';
     // private methods
 
     /**
@@ -54,26 +65,27 @@ var LIFE = (function () {
         loop.frameRequest = window.requestAnimationFrame(step);
     }
 
-    function canvasClickHandler(evt) {
-        var m = Math.floor(evt.offsetY / conf.tileSize),
-            n = Math.floor(evt.offsetX / conf.tileSize);
-
-        if (gol.isCellAlive(m, n)) {
-            gol.setCellDead(m, n);
-        } else {
-            gol.setCellAlive(m, n);
-        }
-
-        graph.drawWorld(cells2points());
-    }
-
 
     // public methods
+
+    api.getSeedDensity = function () {
+        return conf.seedDensity;
+    };
+
+    api.setSeedDensity = function (seed) {
+
+        if (seed > 0 && seed <= 1) {
+            conf.seedDensity = Math.round(seed * 100) / 100;
+
+            return true;
+        }
+
+        return false;
+    };
 
     api.seed = function () {
         gol.clearCells();
         gol.setAliveAtRandomCells(Math.floor(conf.rows * conf.columns * conf.seedDensity));
-        graph.drawWorld(cells2points());
     };
 
     api.clear = function () {
@@ -82,16 +94,28 @@ var LIFE = (function () {
     };
 
     api.start = function () {
+        var elm = null;
+
         if (inited && (typeof loop === 'object') && !loop.frameRequest) {
             loop.frameRequest = window.requestAnimationFrame(step);
             loop.lastAction   = Date.now();
+
+            elm = $(conf.selector.playPauseIcon);
+            elm.removeClass(conf.cssClass.play)
+            elm.addClass(conf.cssClass.pause);
         }
     };
 
     api.stop = function () {
+        var elm = null;
+
         if (loop.frameRequest) {
             window.cancelAnimationFrame(loop.frameRequest);
             loop.frameRequest = null;
+
+            elm = $(conf.selector.playPauseIcon);
+            elm.removeClass(conf.cssClass.pause)
+            elm.addClass(conf.cssClass.play);
         }
     };
 
@@ -106,15 +130,22 @@ var LIFE = (function () {
         }
 
         api.stop();
-        gol.clearCells();
-        gol.setAliveAtRandomCells(Math.floor(conf.rows * conf.columns * conf.seedDensity));
+        api.seed();
         api.start();
     };
 
-    api.init = function () {
-        var canvasElement = document.querySelector(conf.canvasElementId);
+    api.playPause = function () {
 
-        if (inited || !canvasElement) {
+        if (api.isRunning()) {
+            api.stop();
+        } else {
+            api.start();
+        }
+    };
+
+    api.init = function () {
+
+        if (inited) {
             return;
         }
 
@@ -125,16 +156,18 @@ var LIFE = (function () {
         graph.mapWidth = conf.columns;
         graph.mapHeight = conf.rows;
 
-        graph.init(conf.canvasElementId);
+        graph.init(conf.selector.canvas);
 
         loop.lastAction = 0;
         loop.timeout = conf.frameTime;
         loop.frameRequest = null;
 
-        canvasElement.addEventListener('click', canvasClickHandler, false);
+        // bind button actions
+        $(conf.selector.playPause).click(api.playPause);
+        $(conf.selector.restart).click(api.restart);
 
         inited = true;
     };
 
     return Object.freeze(api);
-} ());
+} (jQuery));
