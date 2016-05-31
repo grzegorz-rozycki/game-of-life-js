@@ -80,9 +80,11 @@
         <script type='text/javascript'>
             'use strict';
             $(document).ready(function () {
-               LIFE.init();
-               LIFE.seed();
-               LIFE.start();
+                if (typeof LIFE !== 'object') return;
+
+                LIFE.init();
+                LIFE.seed();
+                LIFE.start();
             });
         </script>
     </body>
